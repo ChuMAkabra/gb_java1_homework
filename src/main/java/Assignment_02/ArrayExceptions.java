@@ -13,27 +13,66 @@ package Assignment_02;
 
 public class ArrayExceptions {
     public static void main(String[] args) {
-        String[][] strArray = { {"1", "no", "5", "9" },
-                                {"2", "a",  "6", "10"},
-//                                {"3", "b",  "7", "d" },
-                                {"4", "c",  "8", "e" }
+        String[][] strArray0 = {{"1", "0", "5", "9"},
+                                {"2", "0", "6", "10"},
+                                {"3", "0", "7", "0"},
+                                {"4", "0", "8", "0"}
         };
-        System.out.println(arraySum(strArray));
-    }
+        String[][] strArray1 = {{"1", "0", "5", "9"},
+                                {"2", "0", "6", "10"},
+//                                {"3", "0", "7", "0"},
+                                {"4", "0", "8", "e"}
+        };
+        String[][] strArray2 = {{"1", "0", "5", "9"},
+                                {"2", "0", "6", "10"},
+                                {"3", "0", "7", "0"},
+                                {"4", "0", "8", "e"}
+        };
 
-    public static int arraySum(String[][] array) {
         try {
-            if (array.length != 4 || array[0].length != 4)
-                throw new MyArraySizeException("АААААААА");
-        } catch (MyArraySizeException e) {
+            System.out.println(arraySum(strArray0));
+            System.out.println(arraySum(strArray1));
+            System.out.println(arraySum(strArray2));
+        } catch (MyArrayDataException | MyArraySizeException e) {
             System.out.println(e.getMessage());
         }
-        return 0;
+    }
+
+    public static int arraySum(String[][] array) throws MyArraySizeException, MyArrayDataException{
+        int numRows = array.length;
+        int numCols = array[0].length;
+
+            if (numRows != 4 || numCols!= 4)
+                throw new MyArraySizeException("Размерность массива должна быть 4х4");
+
+        int sum = 0;
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                try {
+                    sum += Integer.parseInt(array[i][j]);
+                } catch(NumberFormatException e) {
+                    throw new MyArrayDataException("Ячейка [" + i + ", " + j + "] содержит " +
+                            "некорректное значение", e);
+                }
+            }
+        }
+        return sum;
     }
 
     public static class MyArraySizeException extends RuntimeException {
         public MyArraySizeException(String message) {
             super(message);
+        }
+    }
+
+    public static class MyArrayDataException extends RuntimeException {
+        public MyArrayDataException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        @Override
+        public String getMessage() {
+            return super.getMessage() + ": " + getCause().getMessage();
         }
     }
 }
