@@ -29,12 +29,16 @@ public class ArrayExceptions {
                                 {"4", "0", "8", "e"}
         };
 
-        try {
-            System.out.println(arraySum(strArray0));
-            System.out.println(arraySum(strArray1));
-            System.out.println(arraySum(strArray2));
-        } catch (MyArrayDataException | MyArraySizeException e) {
-            System.out.println(e.getMessage());
+        Object[] objects = new Object[] {strArray0, strArray1, strArray2};
+        for (Object strArray : objects) {
+            try {
+                System.out.println(arraySum((String[][])strArray));
+//                System.out.println(arraySum(strArray0));
+//                System.out.println(arraySum(strArray1));
+//                System.out.println(arraySum(strArray2));
+            } catch (MyArrayDataException | MyArraySizeException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
