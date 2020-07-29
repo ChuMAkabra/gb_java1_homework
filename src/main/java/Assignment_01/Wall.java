@@ -10,4 +10,14 @@ public class Wall implements Hurdles{
     public float getHeight() {
         return height;
     }
+
+    @Override
+    public boolean attempt(Participant participant) {
+        boolean runSuccess = participant.getMaxHeight() >= height;
+        String result = participant.getSpecies() + " " + participant.getName() + " с лимитом " +
+                participant.getMaxHeight() + "м " +
+                ((runSuccess) ? "перепрыгнул " : "не перепрыгнул ") + height + "м";
+        System.out.println(result);
+        return runSuccess;
+    }
 }

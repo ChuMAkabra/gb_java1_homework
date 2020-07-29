@@ -41,13 +41,8 @@ public class Main {
     private static void goRunJump() {
         for (Participant participant : participants) {
             for (Hurdles hurdle : hurdles) {
-                if (hurdle instanceof Treadmill) {
-                    if (!participant.run((Treadmill)hurdle)) break;
-                }
-                else {
-                    if (!participant.jump((Wall)hurdle)) break;
+                    if (!hurdle.attempt(participant)) break;
                 }
             }
         }
     }
-}
