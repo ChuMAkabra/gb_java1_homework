@@ -20,22 +20,25 @@ public class ArrayExceptions {
         };
         String[][] strArray1 = {{"1", "0", "5", "9"},
                                 {"2", "0", "6", "10"},
-//                                {"3", "0", "7", "0"},
-                                {"4", "0", "8", "e"}
+//                                {"3", "0", "7", "0"}, // испортили размерность
+                                {"4", "0", "8", "e"}    // тут тоже ошибка, но до нее не дойдем
         };
         String[][] strArray2 = {{"1", "0", "5", "9"},
                                 {"2", "0", "6", "10"},
                                 {"3", "0", "7", "0"},
-                                {"4", "0", "8", "e"}
+                                {"4", "0", "8", "e"}    // в последнем элементе ошибка
         };
 
-        Object[] objects = new Object[] {strArray0, strArray1, strArray2};
-        for (Object strArray : objects) {
+/**
+ * Астамур, подскажите, пожалуйста:
+ * 1) есть ли более красивый способ совершить все вызовы, а не только один?
+ * 2) можно ли как-то продолжить выполнение блока try после обработки исключения? (например,
+ * пропустить выполнение ошибочного кода и перейти к следующей строчке?)
+ */
+        String[][][] arrays = new String[][][] {strArray0, strArray1, strArray2};
+            for (String[][] strArray : arrays) {
             try {
-                System.out.println(arraySum((String[][])strArray));
-//                System.out.println(arraySum(strArray0));
-//                System.out.println(arraySum(strArray1));
-//                System.out.println(arraySum(strArray2));
+                System.out.println(arraySum(strArray));
             } catch (MyArrayDataException | MyArraySizeException e) {
                 System.out.println(e.getMessage());
             }
