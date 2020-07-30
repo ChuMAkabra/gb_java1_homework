@@ -24,21 +24,10 @@ public class Main {
         checkPhoneBook();
     }
 
-    private static void checkPhoneBook() {
-        PhoneBook ph = new PhoneBook();
-        ph.add(89151000000L, "Петров");
-        ph.add(89151234567L, "Сидоров");
-        ph.add(89151222222L, "Иванов");
-        ph.add(89151333333L, "Иванов");
-        ph.add(89151444444L, "Иванов");
-        System.out.println(ph.get("Иванов"));
-        System.out.println(ph.get("Сидоров"));
-        System.out.println(ph.get("Петров"));
-    }
-
     private static void countWords() {
-        String[] words = {"bind", "bound", "bound", "be", "was", "were", "been", "beat", "beat",
-                "beaten", "begin", "began", "begun", "become", "became", "become", "bear", "bore", "born"};
+        String[] words = {"bind", "bound", "bound", "be", "was", "were", "been",
+                          "beat", "beat", "beaten", "begin", "began", "begun",
+                          "become", "became", "become", "bear", "bore", "born"};
 
         System.out.printf("Исходный массив: %s\n", Arrays.toString(words));
 
@@ -52,6 +41,18 @@ public class Main {
 
         System.out.printf("Вывод подсчета в виде TreeMap: %s\n", wordTreeMap);
         System.out.printf("Вывод подсчета в виде HashMap: %s\n", wordHashMap);
+    }
+
+    private static void checkPhoneBook() {
+        PhoneBook ph = new PhoneBook();
+        ph.add(89151000000L, "Петров");
+        ph.add(89151234567L, "Сидоров");
+        ph.add(89151222222L, "Иванов");
+        ph.add(89151333333L, "Иванов");
+        ph.add(89151444444L, "Иванов");
+        System.out.println(ph.get("Иванов"));
+        System.out.println(ph.get("Сидоров"));
+        System.out.println(ph.get("Петров"));
     }
 
     private static void populateMap(String[] words, Map<String, Integer> wordTreeMap) {
