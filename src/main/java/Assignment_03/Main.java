@@ -32,6 +32,7 @@ public class Main {
         System.out.printf("Исходный массив: %s\n", Arrays.toString(words));
 
         TreeSet<String> wordSet = new TreeSet<>(Arrays.asList(words));
+        // это можно было не делать, просто решил поработать так же и с TreeSet
         System.out.printf("Вывод сортированных уникальных слов через TreeSet: %s\n", wordSet);
 
         HashMap<String, Integer> wordHashMap = new HashMap<>(words.length);
@@ -41,24 +42,29 @@ public class Main {
 
         System.out.printf("Вывод подсчета в виде TreeMap: %s\n", wordTreeMap);
         System.out.printf("Вывод подсчета в виде HashMap: %s\n", wordHashMap);
+        System.out.println();
+    }
+
+    private static void populateMap(String[] words, Map<String, Integer> wordMap) {
+        for (String word : words) {
+            if (!wordMap.containsKey(word)) wordMap.put(word, 1);
+            else wordMap.put(word, wordMap.get(word) + 1);
+        }
     }
 
     private static void checkPhoneBook() {
         PhoneBook ph = new PhoneBook();
         ph.add(89151000000L, "Петров");
-        ph.add(89151234567L, "Сидоров");
         ph.add(89151222222L, "Иванов");
+        ph.add(89151234567L, "Сидоров");
         ph.add(89151333333L, "Иванов");
         ph.add(89151444444L, "Иванов");
-        System.out.println(ph.get("Иванов"));
-        System.out.println(ph.get("Сидоров"));
-        System.out.println(ph.get("Петров"));
+        printPhones(ph, "Иванов");
+        printPhones(ph, "Петров");
+        printPhones(ph, "Сидоров");
     }
 
-    private static void populateMap(String[] words, Map<String, Integer> wordTreeMap) {
-        for (String word : words) {
-            if (!wordTreeMap.containsKey(word)) wordTreeMap.put(word, 1);
-            else wordTreeMap.put(word, wordTreeMap.get(word) + 1);
-        }
+    private static void printPhones(PhoneBook ph, String name) {
+        System.out.println(name + " " + ph.get(name));
     }
 }
