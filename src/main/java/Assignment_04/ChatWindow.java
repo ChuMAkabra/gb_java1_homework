@@ -37,7 +37,9 @@ public class ChatWindow extends JFrame {
 
         // создание однострочного поля ввода (и скролл-баров)
         editText = new JTextField();
-        editText.addActionListener(new sendTextActionListener());
+
+        // ДОБАВЛЕНИЕ ОБРАБОТЧИКА СОБЫТИЙ для поля ввода (4 способами, для закрепления материала)
+        fourWaysToAddAL();
 
         // установка ограничений однострочного поля ввода
         JScrollPane editScroll = new JScrollPane(editText);
@@ -51,7 +53,7 @@ public class ChatWindow extends JFrame {
 
         // создание кнопки
         JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(new sendTextActionListener());
+        sendButton.addActionListener(this::sendTextAction); // добавление обработчика события
 
         // установка ограничений кнопки
         constraints.weightx = 0;    // занимает 0% по горизонтали (не меняет размер при расширении)
@@ -65,16 +67,43 @@ public class ChatWindow extends JFrame {
         setVisible(true);
     }
 
+    // 4 способа добавить обработчик события
+    private void fourWaysToAddAL() {
+        // Вариант №1: анонимный класс
+        editText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendTextAlgorithm();
+            }
+        });
+        // Вариант №2: лямбда-выражение
+        editText.addActionListener(e -> sendTextAlgorithm());
+        // Вариант №3: ссылка на метод
+        editText.addActionListener(this::sendTextAction);
+        // Вариант №4: экземпляр обработчика событий
+        editText.addActionListener(new sendTextActionListener());
+    }
+
+    // метод-аналог actionPerformed(ActionEvent e)
+    private void sendTextAction(ActionEvent e) {
+        sendTextAlgorithm();
+    }
+
     // обработчик события отправки сообщений (по нажатии Enter или кнопки Send)
-    public class sendTextActionListener implements ActionListener {
+    private class sendTextActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String edit = editText.getText();
-            if (!edit.equals("")) {
-                String chat = chatText.getText();
-                chatText.setText(chat + (!chat.equals("") ? "\n" : "") + "Me:\n" + edit);
-                editText.setText("");
-            }
+            sendTextAlgorithm();
+        }
+    }
+
+    // алгоритм отправки сообщения
+    private void sendTextAlgorithm() {
+        String edit = editText.getText();
+        if (!edit.equals("")) {
+            String chat = chatText.getText();
+            chatText.setText(chat + (!chat.equals("") ? "\n" : "") + "Me:\n" + edit);
+            editText.setText("");
         }
     }
 }
