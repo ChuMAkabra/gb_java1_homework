@@ -72,7 +72,7 @@ public class ChatWindow extends JFrame {
             String edit = editText.getText();
             if (!edit.equals("")) {
                 String chat = chatText.getText();
-                chatText.setText(chat + (!chat.equals("") ? "\n" : "") + "Me:\n" + editText.getText());
+                chatText.setText(chat + (!chat.equals("") ? "\n" : "") + "Me:\n" + edit);
                 editText.setText("");
             }
         }
