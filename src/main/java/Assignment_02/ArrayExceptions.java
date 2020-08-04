@@ -47,14 +47,13 @@ public class ArrayExceptions {
 
     public static int arraySum(String[][] array) throws MyArraySizeException, MyArrayDataException{
         int numRows = array.length;
-        int numCols = array[0].length;
-
-            if (numRows != 4 || numCols!= 4)
+        for (String[] strings : array) {
+            if (numRows != 4 || strings.length != 4)
                 throw new MyArraySizeException("Размерность массива должна быть 4х4");
-
+        }
         int sum = 0;
         for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
+            for (int j = 0; j < numRows; j++) {
                 try {
                     sum += Integer.parseInt(array[i][j]);
                 } catch(NumberFormatException e) {
