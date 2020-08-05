@@ -17,12 +17,11 @@ public class Threads {
         firstMethod(arr);
         // Второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом склеивает эти массивы обратно в один.
         secondMethod(arr);
-        calculate(arr,5, 2);
     }
 
     private static void firstMethod(float[] arr) {
         long a = System.currentTimeMillis();
-        calculate(arr, 5.0, 2.0);
+        calculate(arr);
         //5) Проверяется время окончания метода System.currentTimeMillis();
         //6) В консоль выводится время работы:
         System.out.println(System.currentTimeMillis() - a);
@@ -33,18 +32,19 @@ public class Threads {
         float[] a1 = new float[h];
         float[] a2 = new float[h];
         divideArray(arr, a1, a2);
-        calculate(a1, 5.0, 2.0);
-        calculate(a2, 5.0, 2.0);
+        new Thread(() -> calculate(a1)).start();
+        new Thread(() -> calculate(a2)).start();
         float[] arrNew = mergeArray(a1, a2);
         //6) В консоль выводится время работы:
         System.out.println(System.currentTimeMillis() - a);
     }
 
-    private static void calculate(float[] arr, double v, double v2) {
+    private static void calculate(float[] arr) {
         //4) Проходят по всему массиву и для каждой ячейки считают новое значение по формуле:
-        for (int i = 0; i < size; i++) {
-            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / v) * Math.cos(0.2f + i / v)
-                    * Math.cos(0.4f + i / v2));
+        int sz = arr.length;
+        for (int i = 0; i < sz; i++) {
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5.0) * Math.cos(0.2f + i / 5.0)
+                    * Math.cos(0.4f + i / 2.0));
         }
     }
 
