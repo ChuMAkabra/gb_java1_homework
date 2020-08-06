@@ -10,33 +10,35 @@ public class Threads {
 
     public static void main(String[] args) {
         // создаем одномерный длинный массив
-        float[] arr1 = new float[size];
+        arr1 = new float[size];
         // заполняем этот массив единицами
         Arrays.fill(arr1, 1.0F);
         arr2 = Arrays.copyOf(arr1, size);
 
         // первый просто бежит по массиву и вычисляет значения
-        firstMethod(arr1);
+        firstMethod();
         // второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом
         // склеивает эти массивы обратно в один.
-        secondMethod(arr2);
+        secondMethod();
         compareArrays(Threads.arr1, arr2);
     }
 
     private static void compareArrays(float[] arr1, float[] arr2) {
         for (int i = 0; i < size; i++) {
-            if (arr1[i] != arr2[i]) System.out.printf("элементы с индексом %d не совпадают\n", i );
+            if (arr1[i] != arr2[i]) {
+                System.out.printf("элементы с индексом %d не совпадают\n", i);
+                break;
+            }
         }
     }
 
-    private static void firstMethod(float[] arr) {
+    private static void firstMethod() {
         // засекаем время выполнения
         long a = System.currentTimeMillis();
         // выполняем вычисления
-        calculate(arr);
+        calculate(arr1);
         // выводим в консоль время работы
         System.out.println(System.currentTimeMillis() - a);
-        arr1 = arr;
     }
 
     private static void calculate(float[] arr) {
@@ -48,21 +50,20 @@ public class Threads {
         }
     }
 
-    private static void secondMethod(float[] arr) {
+    private static void secondMethod() {
         // засекаем время выполнения
         long a = System.currentTimeMillis();
         float[] a1 = new float[h];
         float[] a2 = new float[h];
         // разбиваем массив на два
-        divideArray(arr, a1, a2);
+        divideArray(arr2, a1, a2);
         // выполняем вычисления в двух потоках одновременно
         new Thread(() -> calculate(a1)).start();
         new Thread(() -> calculate(a2)).start();
         // склеиваем массив
-        float[] arrNew = mergeArrays(a1, a2);
+        arr2 = mergeArrays(a1, a2);
         // выводим в консоль время работы:
         System.out.println(System.currentTimeMillis() - a);
-        arr2 = arrNew;
     }
 
     private static void divideArray(float[] arr, float[] a1, float[] a2) {
