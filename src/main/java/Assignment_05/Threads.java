@@ -23,15 +23,6 @@ public class Threads {
         compareArrays(Threads.arr1, arr2);
     }
 
-    private static void compareArrays(float[] arr1, float[] arr2) {
-        for (int i = 0; i < size; i++) {
-            if (arr1[i] != arr2[i]) {
-                System.out.printf("элементы с индексом %d не совпадают\n", i);
-                break;
-            }
-        }
-    }
-
     private static void firstMethod() {
         // засекаем время выполнения
         long a = System.currentTimeMillis();
@@ -76,5 +67,14 @@ public class Threads {
         System.arraycopy(a1, 0, arr, 0, h);
         System.arraycopy(a2, 0, arr, h, h);
         return arr;
+    }
+
+    private static void compareArrays(float[] arr1, float[] arr2) {
+        for (int i = 0; i < size; i++) {
+            if (arr1[i] != arr2[i]) {
+                System.out.printf("элементы, начиная с индекса %d, не совпадают\n", i);
+                break;
+            }
+        }
     }
 }
