@@ -7,7 +7,7 @@ public class Threads {
     static float[] arr1;
     static float[] arr2;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // создаем одномерный длинный массив
         arr1 = new float[size];
         // заполняем этот массив единицами
@@ -41,7 +41,7 @@ public class Threads {
         }
     }
 
-    private static void secondMethod() {
+    private static void secondMethod() throws InterruptedException {
         // засекаем время выполнения
         long a = System.currentTimeMillis();
         float[] a1 = new float[h];
@@ -49,8 +49,13 @@ public class Threads {
         // разбиваем массив на два
         divideArray(arr2, a1, a2);
         // выполняем вычисления в двух потоках одновременно
-        new Thread(() -> calculate(a1, 0)).start();
-        new Thread(() -> calculate(a2, h)).start();
+        Thread t1 = new Thread(() -> calculate(a1, 0));
+        t1.start();
+        t1.join();
+        Thread t2 = new Thread(() -> calculate(a2, h));
+        t2.start();
+        t2.join();
+
         // склеиваем массив
         arr2 = mergeArrays(a1, a2);
         // выводим в консоль время работы:
