@@ -50,10 +50,10 @@ public class Threads {
         divideArray(arr2, a1, a2);
         // выполняем вычисления в двух потоках одновременно
         Thread t1 = new Thread(() -> calculate(a1, 0));
-        t1.start();
-        t1.join();
         Thread t2 = new Thread(() -> calculate(a2, h));
+        t1.start();
         t2.start();
+        t1.join();
         t2.join();
 
         // склеиваем массив
