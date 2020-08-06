@@ -1,5 +1,4 @@
 package Assignment_05;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Threads {
@@ -20,7 +19,7 @@ public class Threads {
         // второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом
         // склеивает эти массивы обратно в один.
         secondMethod();
-        compareArrays(Threads.arr1, arr2);
+        compareArrays(arr1, arr2);
     }
 
     private static void firstMethod() {
@@ -36,9 +35,9 @@ public class Threads {
         // проходим по всему массиву, и для каждой ячейки считаем новое значение по формуле:
         int sz = arr.length;
         for (int i = 0; i < sz; i++) {
-            arr[i] = (float) (arr[i] * Math.sin(0.2f + i + shift / 5.0)
-                    * Math.cos(0.2f + i + shift / 5.0)
-                    * Math.cos(0.4f + i + shift / 2.0));
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + (i + shift) / 5.0)
+                    * Math.cos(0.2f + (i + shift) / 5.0)
+                    * Math.cos(0.4f + (i + shift) / 2.0));
         }
     }
 
