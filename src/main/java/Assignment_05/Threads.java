@@ -14,7 +14,7 @@ public class Threads {
         // заполняем этот массив единицами
         Arrays.fill(arr1, 1.0F);
         arr2 = Arrays.copyOf(arr1, size);
-
+        compareArrays(Threads.arr1, arr2);
         // первый просто бежит по массиву и вычисляет значения
         firstMethod();
         // второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом
@@ -27,17 +27,18 @@ public class Threads {
         // засекаем время выполнения
         long a = System.currentTimeMillis();
         // выполняем вычисления
-        calculate(arr1);
+        calculate(arr1, 0);
         // выводим в консоль время работы
         System.out.println(System.currentTimeMillis() - a);
     }
 
-    private static void calculate(float[] arr) {
+    private static void calculate(float[] arr, int shift) {
         // проходим по всему массиву, и для каждой ячейки считаем новое значение по формуле:
         int sz = arr.length;
         for (int i = 0; i < sz; i++) {
-            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5.0) * Math.cos(0.2f + i / 5.0)
-                    * Math.cos(0.4f + i / 2.0));
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + i + shift / 5.0)
+                    * Math.cos(0.2f + i + shift / 5.0)
+                    * Math.cos(0.4f + i + shift / 2.0));
         }
     }
 
@@ -49,8 +50,8 @@ public class Threads {
         // разбиваем массив на два
         divideArray(arr2, a1, a2);
         // выполняем вычисления в двух потоках одновременно
-        new Thread(() -> calculate(a1)).start();
-        new Thread(() -> calculate(a2)).start();
+        new Thread(() -> calculate(a1, 0)).start();
+        new Thread(() -> calculate(a2, h)).start();
         // склеиваем массив
         arr2 = mergeArrays(a1, a2);
         // выводим в консоль время работы:
