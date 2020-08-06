@@ -1,46 +1,46 @@
 package Assignment_05;
-
-
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Threads {
-    // 1) Создают одномерный длинный массив, например:
     static final int size = 10000000;
     static final int h = size / 2;
+    static float[] arr1;
+    static float[] arr2;
 
     public static void main(String[] args) {
-        float[] arr = new float[size];
-        //2) Заполняют этот массив единицами;
-        Arrays.fill(arr, 1.0F);
-        //3) Засекают время выполнения:
-        // Первый просто бежит по массиву и вычисляет значения.
-        firstMethod(arr);
-        // Второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом склеивает эти массивы обратно в один.
-        secondMethod(arr);
+        // создаем одномерный длинный массив
+        float[] arr1 = new float[size];
+        // заполняем этот массив единицами
+        Arrays.fill(arr1, 1.0F);
+        arr2 = Arrays.copyOf(arr1, size);
+
+        // первый просто бежит по массиву и вычисляет значения
+        firstMethod(arr1);
+        // второй разбивает массив на два массива, в двух потоках высчитывает новые значения и потом
+        // склеивает эти массивы обратно в один.
+        secondMethod(arr2);
+        compareArrays(Threads.arr1, arr2);
+    }
+
+    private static void compareArrays(float[] arr1, float[] arr2) {
+        for (int i = 0; i < size; i++) {
+            if (arr1[i] != arr2[i]) System.out.printf("элементы с индексом %d не совпадают\n", i );
+        }
     }
 
     private static void firstMethod(float[] arr) {
+        // засекаем время выполнения
         long a = System.currentTimeMillis();
+        // выполняем вычисления
         calculate(arr);
-        //5) Проверяется время окончания метода System.currentTimeMillis();
-        //6) В консоль выводится время работы:
+        // выводим в консоль время работы
         System.out.println(System.currentTimeMillis() - a);
-    }
-
-    private static void secondMethod(float[] arr) {
-        long a = System.currentTimeMillis();
-        float[] a1 = new float[h];
-        float[] a2 = new float[h];
-        divideArray(arr, a1, a2);
-        new Thread(() -> calculate(a1)).start();
-        new Thread(() -> calculate(a2)).start();
-        float[] arrNew = mergeArray(a1, a2);
-        //6) В консоль выводится время работы:
-        System.out.println(System.currentTimeMillis() - a);
+        arr1 = arr;
     }
 
     private static void calculate(float[] arr) {
-        //4) Проходят по всему массиву и для каждой ячейки считают новое значение по формуле:
+        // проходим по всему массиву, и для каждой ячейки считаем новое значение по формуле:
         int sz = arr.length;
         for (int i = 0; i < sz; i++) {
             arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5.0) * Math.cos(0.2f + i / 5.0)
@@ -48,13 +48,29 @@ public class Threads {
         }
     }
 
-    //    Пример обратной склейки:
+    private static void secondMethod(float[] arr) {
+        // засекаем время выполнения
+        long a = System.currentTimeMillis();
+        float[] a1 = new float[h];
+        float[] a2 = new float[h];
+        // разбиваем массив на два
+        divideArray(arr, a1, a2);
+        // выполняем вычисления в двух потоках одновременно
+        new Thread(() -> calculate(a1)).start();
+        new Thread(() -> calculate(a2)).start();
+        // склеиваем массив
+        float[] arrNew = mergeArrays(a1, a2);
+        // выводим в консоль время работы:
+        System.out.println(System.currentTimeMillis() - a);
+        arr2 = arrNew;
+    }
+
     private static void divideArray(float[] arr, float[] a1, float[] a2) {
         System.arraycopy(arr, 0, a1, 0, h);
         System.arraycopy(arr, h, a2, 0, h);
     }
 
-    private static float[] mergeArray(float[] a1, float[] a2) {
+    private static float[] mergeArrays(float[] a1, float[] a2) {
         float[] arr = new float[size];
         System.arraycopy(a1, 0, arr, 0, h);
         System.arraycopy(a2, 0, arr, h, h);
