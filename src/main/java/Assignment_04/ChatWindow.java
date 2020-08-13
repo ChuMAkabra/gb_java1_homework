@@ -23,6 +23,7 @@ public class ChatWindow extends JFrame {
         chatText = new JTextArea();
         chatText.setBackground(new Color(230,230,230));
         chatText.setEditable(false); // теперь текст нельзя редактировать вручную
+        chatText.setLineWrap(true);  // переносить текст на новую строку, если она на вмещается
         JScrollPane chatScroll = new JScrollPane(chatText);
 
         // установка ограничений текстового поля чата
