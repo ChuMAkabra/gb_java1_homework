@@ -28,7 +28,7 @@ public class ClientServer {
                 while (true) {
                     String inStr = input.readUTF();
                     if (inStr.equals("/end")) closeConnection();
-                    System.out.println("Клиент: " + inStr);
+                    System.out.println(inStr);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
