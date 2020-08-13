@@ -1,12 +1,13 @@
 package Assignment_06;
 
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class EchoClient {
+public class ConsoleClient {
     private final String SERVER_ADDR = "localhost"; // адрес эхо-сервера, к кот. подключ. клиент
     private final int SERVER_PORT = 8189;           // номер порта
     private Socket socket;
@@ -14,7 +15,7 @@ public class EchoClient {
     private DataOutputStream output;
     public Scanner scanner = new Scanner(System.in);
 
-    public EchoClient () {
+    public ConsoleClient() {
         try {
             openConnection();
         } catch (IOException e) {
@@ -37,7 +38,6 @@ public class EchoClient {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Сервер был отключен!");
                 closeConnection();
             }
         }).start();
@@ -52,7 +52,9 @@ public class EchoClient {
     private void sendMessage() {
         if (scanner.hasNext()) {
             try {
-                output.writeUTF(scanner.nextLine());
+                String outStr = scanner.nextLine();
+                output.writeUTF(outStr);
+                if (outStr.equals("/end")) closeConnection();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,18 +72,16 @@ public class EchoClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("Сервер был отключен по инициативе пользователя");
         System.exit(0);
     }
 
     public static void main(String[] args) {
-        new EchoClient();
-//        SwingUtilities.invokeLater(() -> new EchoClient());
-//        SwingUtilities.invokeLater(EchoClient::new);
+        new ConsoleClient();
     }
 }
