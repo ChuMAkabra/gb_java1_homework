@@ -23,7 +23,7 @@ public class ClientServer {
     public static Scanner scanner = new Scanner(System.in);
 
     protected void inThread() {
-        new Thread(() -> {
+        Thread inThread = new Thread(() -> {
             try {
                 while (true) {
                     String inStr = input.readUTF();
@@ -35,15 +35,18 @@ public class ClientServer {
                 System.out.println("Сервер был отключен!");
                 closeConnection();
             }
-        }).start();
+        });
+        inThread.setDaemon(true);
+        inThread.start();
     }
 
     protected void outThread() {
-        new Thread(() -> {
+        Thread outThread = new Thread(() -> {
             while (true) {
                 sendMessage();
             }
-        }).start();
+        });
+        outThread.start();
     }
 
     protected void sendMessage() {
