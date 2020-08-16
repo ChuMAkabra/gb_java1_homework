@@ -43,8 +43,16 @@ public class MyServer {
     }
 
     public synchronized void broadcastMsg(String msg) {
-        for (ClientHandler o : clients.values()) {
-            o.sendMsg(msg);
+        if (msg.contains(": /w ")) {
+            String[] msg_split = msg.split("\\s", 4);
+            for (ClientHandler o : clients.values()) {
+                if (o.getName().equals(msg_split[2])) o.sendMsg(msg_split[0] + msg_split[3]);
+            }
+        }
+        else {
+            for (ClientHandler o : clients.values()) {
+                o.sendMsg(msg);
+            }
         }
     }
 
