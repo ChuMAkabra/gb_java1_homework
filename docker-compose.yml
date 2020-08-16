@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:12
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./docker/init_chat.sql:/docker-entrypoint-initdb.d/init_chat.sql
+    ports:
+      - 5432:5432
+
+volumes:
+  db-data:
