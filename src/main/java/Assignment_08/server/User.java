@@ -1,4 +1,4 @@
-package dev.astamur.geekbrains.lessons.lesson8.server;
+package Assignment_08.server;
 
 import java.util.StringJoiner;
 

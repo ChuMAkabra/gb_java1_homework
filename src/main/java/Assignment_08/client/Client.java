@@ -1,4 +1,4 @@
-package dev.astamur.geekbrains.lessons.lesson8.client;
+package Assignment_08.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
