@@ -47,7 +47,7 @@ public class ClientHandler {
         new Thread(() -> {
             long startTime = System.currentTimeMillis();
             while (true) {
-                if (System.currentTimeMillis() - startTime >= 3000 && name.isEmpty()) {
+                if (System.currentTimeMillis() - startTime >= 120000 && name.isEmpty()) {
                     System.out.println("Время ожидания аутентификации вышло");
                     closeConnection();
                     break;
