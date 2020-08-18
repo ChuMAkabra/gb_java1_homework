@@ -49,10 +49,9 @@ public class MyServer {
             String receiver = msg_split[2];
             String message = msg_split[3];
 
-//            String sender = msg_split[1].replace(":","");
             for (ClientHandler o : clients.values()) {
                 if (o.getName().equals(sender) || o.getName().equals(receiver)) {
-                    o.sendMsg(sender + ": " + message);
+                    o.sendMsg(formatMessage(sender, message));
                 }
             }
         }

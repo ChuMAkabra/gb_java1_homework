@@ -1,5 +1,7 @@
 package Assignment_07.server;
 
+import Assignment_07.client.Client;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,10 +26,12 @@ public class ClientHandler {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
             this.name = "";
+
+            checkConnectionTIme();
+
             new Thread(() -> {
                 try {
-                    authentication();
-                    readMessages();
+                    if (authentication()) readMessages();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
@@ -39,24 +43,43 @@ public class ClientHandler {
         }
     }
 
-    public void authentication() throws IOException {
-        while (true) {
-            String str = in.readUTF();
-            if (str.startsWith("/auth")) {
-                String[] parts = str.split("\\s");
-                String nick = myServer.getAuthService().getNickByLoginPass(parts[1], parts[2]);
-                if (nick != null) {
-                    if (!myServer.isNickBusy(nick)) {
-                        sendMsg("/authok " + nick);
-                        name = nick;
-                        myServer.subscribe(this);
-                        return;
-                    } else {
-                        sendMsg("Учетная запись уже используется");
-                    }
-                } else {
-                    sendMsg("Неверные логин/пароль");
+    private void checkConnectionTIme() {
+        new Thread(() -> {
+            long startTime = System.currentTimeMillis();
+            while (true) {
+                if (System.currentTimeMillis() - startTime >= 3000 && name.isEmpty()) {
+                    System.out.println("Время ожидания аутентификации вышло");
+                    closeConnection();
+                    break;
                 }
+            }
+        }).start();
+    }
+
+    public boolean authentication() {
+        while (true) {
+            String str;
+            try {
+                str = in.readUTF();
+                if (str.startsWith("/auth")) {
+                    String[] parts = str.split("\\s");
+                    String nick = myServer.getAuthService().getNickByLoginPass(parts[1], parts[2]);
+                    if (nick != null) {
+                        if (!myServer.isNickBusy(nick)) {
+                            sendMsg("/authok " + nick);
+                            name = nick;
+                            myServer.subscribe(this);
+                            return true;
+                        } else {
+                            sendMsg("Учетная запись уже используется");
+                        }
+                    } else {
+                        sendMsg("Неверные логин/пароль");
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Время ожидания аутентификации клиента вышло");
+                return false;
             }
         }
     }
