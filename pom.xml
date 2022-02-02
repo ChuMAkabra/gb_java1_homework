@@ -8,7 +8,7 @@
     <artifactId>dzChumanov02_01</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <postgres.version>42.2.14</postgres.version>
+        <postgres.version>42.2.25</postgres.version>
     </properties>
 
     <dependencies>
